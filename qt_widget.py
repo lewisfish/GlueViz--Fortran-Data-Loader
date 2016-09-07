@@ -16,7 +16,7 @@ class QtFortranDialog(QtGui.QDialog):
         self.name = name
         self.X = []
         self.valdim = 4
-#        self.name = QtGui.QFileDialog.getOpenFileName(self, 'Open File')
+        self.valtext = '4'
         
         self.dimensions.valueChanged.connect(self.valuechange)
         self.GridSize.textChanged.connect(self.textchange)
@@ -32,17 +32,22 @@ class QtFortranDialog(QtGui.QDialog):
             dt = np.float64
         elif '4' in self.valtext:
             dt = np.float32
-        else:
-            print('Error!!')
+
         dat = np.fromfile(file=fd, dtype=dt, sep="")
 
         magic = self.valdim
         ndim = self.valgrid
         
-        shape = (ndim, ndim, ndim, magic)
+        if magic == 4:
+            shape = (ndim, ndim, ndim, magic)
+        elif magic == 3:
+            shape = (ndim, ndim, ndim)
+        else:
+            print('Not yet supported...')
         dat = dat.reshape(shape, order='F') 
         fd.close()
-        dat = dat[:, :, :, 0]
+        if magic == 4:
+            dat = dat[:, :, :, 0]
         self.X = dat[:, :, :]
         del dat
         
@@ -52,7 +57,10 @@ class QtFortranDialog(QtGui.QDialog):
         self.valtext = text
 
     def textchange(self):
-        self.valgrid = int(self.GridSize.text())
-        
+        try:
+            self.valgrid = int(self.GridSize.text())
+        except ValueError:
+            pass
+            
     def valuechange(self):
         self.valdim = int(self.dimensions.value())
