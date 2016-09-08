@@ -17,40 +17,50 @@ class QtFortranDialog(QtGui.QDialog):
         self.X = []
         self.valdim = 4
         self.valtext = '4'
+        self.flag = False
+        
+        self.Formattedbut.toggled.connect(self.hidelayout)
+        self.Unformattedbut.toggled.connect(self.showlayout)
         
         self.dimensions.valueChanged.connect(self.valuechange)
         self.GridSize.textChanged.connect(self.textchange)
-        self.comboBox.activated[str].connect(self.selectionchange)        
+        self.comboBox.activated[str].connect(self.selectionchange)
 
         self.Load.clicked.connect(self.click)
 
     def click(self):
 
-        fd = open(self.name, 'rb')
-        
-        if '8' in self.valtext:
-            dt = np.float64
-        elif '4' in self.valtext:
-            dt = np.float32
+        if not self.flag:
+            fd = open(self.name, 'rb')
+            
+            if '8' in self.valtext:
+                dt = np.float64
+            elif '4' in self.valtext:
+                dt = np.float32
 
-        dat = np.fromfile(file=fd, dtype=dt, sep="")
+            dat = np.fromfile(file=fd, dtype=dt, sep="")
 
-        magic = self.valdim
-        ndim = self.valgrid
-        
-        if magic == 4:
-            shape = (ndim, ndim, ndim, magic)
-        elif magic == 3:
-            shape = (ndim, ndim, ndim)
+            magic = self.valdim
+            try:
+                ndim = self.valgrid
+            except AttributeError:
+                self.GridSize.setFocus()
+            
+            if magic == 4:
+                shape = (ndim, ndim, ndim, magic)
+            elif magic == 3:
+                shape = (ndim, ndim, ndim)
+            else:
+                print('Not yet supported...')
+            dat = dat.reshape(shape, order='F') 
+            fd.close()
+            if magic == 4:
+                dat = dat[:, :, :, 0]
+            self.X = dat[:, :, :]
+            del dat
         else:
-            print('Not yet supported...')
-        dat = dat.reshape(shape, order='F') 
-        fd.close()
-        if magic == 4:
-            dat = dat[:, :, :, 0]
-        self.X = dat[:, :, :]
-        del dat
-        
+            self.X = np.loadtxt(self.name)
+
         self.accept()
             
     def selectionchange(self, text):
@@ -61,6 +71,32 @@ class QtFortranDialog(QtGui.QDialog):
             self.valgrid = int(self.GridSize.text())
         except ValueError:
             pass
-            
+        except AttributeError:
+            self.GridSize.setFocus()
+ 
     def valuechange(self):
         self.valdim = int(self.dimensions.value())
+        
+    def hidelayout(self):
+
+            self.dimensions.hide()
+            self.comboBox.hide()
+            self.GridSize.hide()
+            self.label.hide()
+            self.label_2.hide()
+            self.label_3.hide()
+            
+            self.flag = True
+            
+    def showlayout(self):
+        if self.flag:
+            self.dimensions.show()
+            self.comboBox.show()
+            self.GridSize.show()
+            self.label.show()
+            self.label_2.show()
+            self.label_3.show()
+            
+            self.flag = False
+
+
