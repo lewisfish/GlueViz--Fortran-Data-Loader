@@ -1,8 +1,7 @@
 # GlueViz--Fortran-Data-Loader
 Data loader for [Glueviz](https://github.com/glue-viz). Enables Glue viz to load unformatted Fortran data files
 
-Currently allows 4D and 3D data cubes to be read in.
-Also allows formatted 2D slices to be displayed.
+Currently allows 4D and 3D data cubes and formatted 2D slices to be read in.
 
 Only 'format' loader can currently read in is unfomatted fortran files written out in this form:
 
@@ -13,3 +12,5 @@ Only 'format' loader can currently read in is unfomatted fortran files written o
 ##ToDo
 
 Generalise code to allow more formats.
+
+fix 4th dimension change
