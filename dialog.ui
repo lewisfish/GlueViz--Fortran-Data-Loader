@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>258</width>
-    <height>247</height>
+    <width>348</width>
+    <height>279</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>20</x>
      <y>40</y>
      <width>221</width>
-     <height>197</height>
+     <height>230</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -35,7 +35,7 @@
        <number>16</number>
       </property>
       <property name="value">
-       <number>4</number>
+       <number>3</number>
       </property>
      </widget>
     </item>
@@ -120,6 +120,19 @@
    </property>
    <property name="text">
     <string>Formatted</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="forthDim">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>80</y>
+     <width>91</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="maximum">
+    <number>3</number>
    </property>
   </widget>
  </widget>
