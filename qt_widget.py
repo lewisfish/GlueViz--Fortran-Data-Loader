@@ -1,5 +1,5 @@
-from glue.external.qt import QtGui
-from glue.external.qt.QtCore import Qt
+from qtpy import QtGui
+from qtpy import QtWidgets
 from glue.utils.qt.helpers import load_ui
 import numpy as np
 import os
@@ -7,7 +7,7 @@ import os
 UI_MAIN = os.path.join(os.path.dirname(__file__), 'dialog.ui')
 
 
-class QtFortranDialog(QtGui.QDialog):
+class QtFortranDialog(QtWidgets.QDialog):
 
     def __init__(self, name):
 
